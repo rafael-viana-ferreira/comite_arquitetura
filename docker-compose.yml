@@ -1,0 +1,26 @@
+services:
+    php:
+      build:
+        context: .
+        dockerfile: dockerfiles/php/dockerfile
+      image: php
+      container_name: php
+      volumes:
+        - .:/var/www
+      networks:
+        - servidor_conecao
+
+    nginx:
+        image: nginx:alpine
+        container_name: servidor_nginx
+        ports:
+          - "80:80"
+        volumes:
+          - .:/var/www
+          - ./dockerfiles/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+          - servidor_conecao
+
+networks:
+  servidor_conecao:
+    driver: bridge

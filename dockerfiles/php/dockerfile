@@ -1,0 +1,48 @@
+FROM php:8.4.27-fpm-alpine3.23
+
+ARG APP_VERSION=dev
+ENV APP_VERSION=${APP_VERSION}
+
+RUN apk add --no-cache \
+    bash \
+    autoconf \
+    libtool \
+    $PHPIZE_DEPS \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libzip-dev \
+    postgresql-dev \
+    icu-dev \
+    libxml2-dev \
+    tidyhtml-dev \
+    libxslt-dev \
+    tar \
+    unzip
+
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-webp \
+    --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        exif \
+        gd \
+        intl \
+        opcache \
+        pdo_pgsql \
+        pgsql \
+        shmop \
+        soap \
+        tidy \
+        xsl \
+        zip
+
+RUN pecl install redis \
+    && docker-php-ext-enable redis
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+EXPOSE 9000
