@@ -3,3 +3,6 @@ src/composer.json
 src/composer.lock
 .env.example
 .env
+vendor
+composer.json
+composer.lock
