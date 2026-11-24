@@ -10,27 +10,27 @@ class ResponseRotasTest extends \PHPUnit\Framework\TestCase
     public function testeRotaInicialRetornaCodigo200()
     {
         $response = new Response();
-        $result = $response->init('/', '1.0.0');
-
+        $result = $response->responseHttp('/');
+        
         $this->assertEquals(200, $result['status']);
-        $this->assertEquals(['status' => 'ok', 'versao' => '1.0.0'], $result['body']);
+        $this->assertSame('pagina_inicial', $result['corpo']);
     }
 
     public function testeRotaInexistenteRetornaCodigo404()
     {
         $response = new Response();
-        $result = $response->init('/rota-teste', '1.0.0');
+        $result = $response->responseHttp('/rota-teste');
 
         $this->assertEquals(404, $result['status']);
-        $this->assertEquals(['status' => 'error', 'message' => 'Rota nao encontrada'], $result['body']);
+        $this->assertSame('pagina_nao_encontrada', $result['corpo']);
     }
 
     public function testRotaSaudeRetornaCodigo200()
     {
         $response = new Response();
-        $result = $response->init('/saude', '1.0.0');
+        $result = $response->responseHttp('/saude');
 
         $this->assertEquals(200, $result['status']);
-        $this->assertEquals(['status' => 'ok', 'versao' => '1.0.0'], $result['body']);
+        $this->assertSame('pagina_saude', $result['corpo']);
     }
 }
