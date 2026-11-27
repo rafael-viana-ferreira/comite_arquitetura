@@ -1,6 +1,6 @@
 <?php 
 
-namespace src\Http;
+namespace App\Http;
 
 class Response {
     public function responseHttp($caminhoUri)
